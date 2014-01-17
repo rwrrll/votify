@@ -1,0 +1,20 @@
+<div class="now_playing block">
+  <p>Now Playing:</p>
+  <h2><%= @current_track %></h2>
+  <p><a href="/vote" class="main_button">Skip this mother!</a></p>
+</div>
+
+<div class="votes block">
+  <h3>Haters:</h3>
+  <% if voters.none? %>
+    <p>Nuttin' but love so far! &hearts;</p>
+  <% else %>
+    <ul>
+      <% voters.each do |voter| %>
+      <li><%= voter %></li>
+      <% end %>
+    </ul>
+    <p><%= VOTERS_REQUIRED_TO_SKIP - voters.length %> more votes needed to skip!</p>
+  <% end %>
+</div>
+
