@@ -1,0 +1,27 @@
+#! /bin/bash
+#
+#  Checks local revision against origin/master.
+#
+#  Seeing this because you have local commits?
+#  You should be using a feature branch ;)
+#
+
+git fetch --quiet origin
+
+if [ `git rev-parse master` == `git rev-parse origin/master` ]; then
+  echo "Votify appears to be up-to-date! :)"
+  cat # wait until SIGTERM
+else
+  echo "************* UPDATE AVAILABLE *************"
+  echo "***                                      ***"
+  echo "***   Please update Votify by running:   ***"
+  echo "***                                      ***"
+  echo "***     git pull origin master           ***"
+  echo "***                                      ***"
+  echo "***   and then try again.                ***"
+  echo "***                                      ***"
+  echo "********************************************"
+
+  sleep 0.5 # for output continuity
+  exit 1
+fi
