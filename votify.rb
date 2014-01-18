@@ -53,3 +53,14 @@ def authenticated?
   session[:access_token] = nil if session[:email] && !session[:email].match(EMAIL_REGEXP)
   return !session[:access_token].nil?
 end
+
+Thread.new do
+  last_track = Spotify.current_track
+  loop do
+    if Spotify.current_track != last_track
+      @@votes.reset
+      last_track = Spotify.current_track
+    end
+    sleep 2
+  end
+end
