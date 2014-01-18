@@ -6,15 +6,15 @@
 
 <div class="votes block">
   <h3>Haters:</h3>
-  <% if voters.none? %>
+  <% if @votes.none? %>
     <p>Nuttin' but love so far! &hearts;</p>
   <% else %>
     <ul>
-      <% voters.each do |voter| %>
+      <% @votes.votes.each do |voter| %>
       <li><%= voter %></li>
       <% end %>
     </ul>
-    <p><%= VOTERS_REQUIRED_TO_SKIP - voters.length %> more votes needed to skip!</p>
+    <p><%= VOTERS_REQUIRED_TO_SKIP - @votes.count %> more votes needed to skip!</p>
   <% end %>
 </div>
 

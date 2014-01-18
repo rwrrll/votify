@@ -1,6 +1,5 @@
 require 'sinatra'
-require './lib/spotify'
-require './lib/authenticator'
+Dir["./lib/*.rb"].each { |f| require f[0...-3] }
 
 enable :sessions
 
@@ -10,10 +9,12 @@ EMAIL_REGEXP = /alliants\.com$/i
 raise "You must set the G_API_CLIENT variable in .env" unless G_API_CLIENT = ENV['G_API_CLIENT']
 raise "You must set the G_API_SECRET variable in .env" unless G_API_SECRET = ENV['G_API_SECRET']
 
+@@votes = Votes.new
 
 get '/' do
   if authenticated?
     @current_track = Spotify.current_track
+    @votes = @@votes
     erb :home
   else
     erb :auth_prompt
@@ -42,8 +43,8 @@ get '/oauth2callback' do
 end
 
 get '/vote' do
-  @@voters << session[:email] unless @@voters.include? session[:email]
-  Spotify.skip_track and reset_voters if @@voters.length == VOTERS_REQUIRED_TO_SKIP
+  @@votes.cast(session[:email])
+  Spotify.skip_track and @@votes.reset if @@votes.count == VOTERS_REQUIRED_TO_SKIP
   redirect '/'
 end
 
@@ -51,12 +52,4 @@ end
 def authenticated?
   session[:access_token] = nil if session[:email] && !session[:email].match(EMAIL_REGEXP)
   return !session[:access_token].nil?
-end
-
-def reset_voters
-  @@voters = []
-end
-
-def voters
-  @@voters ||= []
 end
