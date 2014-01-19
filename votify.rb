@@ -1,4 +1,5 @@
 require 'sinatra'
+require "sinatra/content_for"
 Dir["./lib/*.rb"].each { |f| require f[0...-3] }
 
 enable :sessions
@@ -10,10 +11,10 @@ raise "You must set the G_API_CLIENT variable in .env" unless G_API_CLIENT = ENV
 raise "You must set the G_API_SECRET variable in .env" unless G_API_SECRET = ENV['G_API_SECRET']
 
 @@votes = Votes.new
+@@current_track = ''
 
 get '/' do
   if authenticated?
-    @current_track = Spotify.current_track
     @votes = @@votes
     erb :home
   else
@@ -55,11 +56,11 @@ def authenticated?
 end
 
 Thread.new do
-  last_track = Spotify.current_track
+  @@current_track = Spotify.current_track
   loop do
-    if Spotify.current_track != last_track
+    if Spotify.current_track != @@current_track
       @@votes.reset
-      last_track = Spotify.current_track
+      @@current_track = Spotify.current_track
     end
     sleep 2
   end

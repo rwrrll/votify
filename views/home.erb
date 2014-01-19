@@ -1,6 +1,8 @@
+<% content_for :head do %><meta http-equiv="refresh" content="4"><% end %>
+
 <div class="now_playing block">
   <p>Now Playing:</p>
-  <h2><%= @current_track %></h2>
+  <h2><%= @@current_track %></h2>
   <p><a href="/vote" class="main_button">Skip this mother!</a></p>
 </div>
 
