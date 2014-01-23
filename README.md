@@ -12,7 +12,7 @@ Take the following steps on the machine running Spotify:
 
 1. Clone the repo
 2. Edit the `.env` file, filling in:
-   - `HOST` with a proxylocal subdomain of your choice
+   - `HOST` with the subdomain you'd like proxylocal to use
    - Google API credentials from https://code.google.com/apis/console (if you work in my office, just ask me for mine.)
 3. Run `bundle install`
 4. Change `VOTERS_REQUIRED_TO_SKIP` and `EMAIL_REGEXP` in `votify.rb` to suit your needs.
